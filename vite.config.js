@@ -1,12 +1,21 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
+import { copyFileSync } from 'fs'
 
-// Build to app/assets with deterministic filenames
+// Build to dist with deterministic filenames
 export default defineConfig({
   base: './',
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'copy-manifest',
+      writeBundle() {
+        copyFileSync('app/manifest.json', 'dist/manifest.json')
+      }
+    }
+  ],
   build: {
-    outDir: 'app/assets',
+    outDir: 'dist/assets',
     emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
