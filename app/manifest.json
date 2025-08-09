@@ -1,0 +1,16 @@
+{
+  "name": "ZenYC Public API Mini",
+  "author": "Ahmed Pervez",
+  "version": "1.0",
+  "frameworkVersion": "2.0",
+  "location": {
+    "support": {
+      "ticket_sidebar": {
+        "url": "assets/index.html"
+      }
+    }
+  },
+  "defaultLocale": "en"
+}
+
+
