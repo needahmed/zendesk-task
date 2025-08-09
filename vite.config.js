@@ -1,6 +1,6 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { copyFileSync } from 'fs'
+import { copyFileSync, mkdirSync } from 'fs'
 
 // Build to dist with deterministic filenames
 export default defineConfig({
@@ -11,11 +11,14 @@ export default defineConfig({
       name: 'copy-manifest',
       writeBundle() {
         copyFileSync('app/manifest.json', 'dist/manifest.json')
+        // Create assets directory and copy index.html that the manifest expects
+        mkdirSync('dist/assets', { recursive: true })
+        copyFileSync('dist/index.html', 'dist/assets/index.html')
       }
     }
   ],
   build: {
-    outDir: 'dist/assets',
+    outDir: 'dist',
     emptyOutDir: true,
     sourcemap: false,
     rollupOptions: {
@@ -24,12 +27,12 @@ export default defineConfig({
       },
       output: {
         inlineDynamicImports: true,
-        entryFileNames: 'index.js',
+        entryFileNames: 'assets/index.js',
         assetFileNames: ({ name }) => {
-          if (name && name.endsWith('.css')) return 'index.css'
+          if (name && name.endsWith('.css')) return 'assets/index.css'
           return 'assets/[name][extname]'
         },
-        chunkFileNames: 'index.js'
+        chunkFileNames: 'assets/index.js'
       }
     }
   },
